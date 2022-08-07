@@ -1,6 +1,6 @@
 ---
-image: Kakashi_Hatake.webp
-meta:description: Kakashi Hatake ist ein Jonin und der ehemalige Hokage aus Konohagakure und der Sohn des "weißen Reißzahns von Konoha", Sakumo Hatake. Er ist ein Mitglied des Hatake-Clan. Kakashi wird auch der "Kopier-Ninja" genannt, da er mit seinem Sharingan schon unzählige Jutsus kopiert hat. Kakashi ist ein großer Fan der von Jiraiya verfassten Flirtparadies-Buchreihe und hat jeden Band mindestens einmal voller Leidenschaft gelesen.
+image: Kakashi_Hatake.png
+meta:description: Kakashi Hatake ist ein Jonin und der ehemalige Hokage aus Konohagakure und der Sohn des "weißen Reißzahns von Konoha", Sakumo Hatake.
 Name: Kakashi Hatake
 In Kana: はたけカカシ
 Geburtstag: 15. September

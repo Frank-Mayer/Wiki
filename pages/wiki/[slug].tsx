@@ -28,12 +28,41 @@ export const getStaticPaths = async () => {
 const Page = (props: { page: WikiPage }) => (
   <>
     <Head>
+      <meta property="twitter:card" content="summary" />
       <title>Reost – {slugToTitle(props.page.slug)}</title>
-      {props.page.meta
-        .filter((x) => x[0].startsWith("meta:"))
-        .map(([key, value]) => (
-          <meta key={"meta." + key} name={key.substring(5)} content={value} />
-        ))}
+      <meta
+        property="og:title"
+        content={"Reost – " + slugToTitle(props.page.slug)}
+      />
+      <meta
+        property="twitter:title"
+        content={"Reost – " + slugToTitle(props.page.slug)}
+      />
+      {props.page.meta.map(([key, value]) =>
+        key.startsWith("meta:") ? (
+          <>
+            <meta key={"meta." + key} name={key.substring(5)} content={value} />
+            <meta property={"og:" + key.substring(5)} content={value} />
+            <meta property={"twitter:" + key.substring(5)} content={value} />
+          </>
+        ) : key === "image" ? (
+          <>
+            <meta
+              name="image"
+              property="og:image"
+              content={`/images/${props.page.slug}/${value}`}
+            />
+            <meta
+              name="twitter:image:src"
+              content={`/images/${props.page.slug}/${value}`}
+            />
+            <meta
+              property="twitter:image"
+              content={`/images/${props.page.slug}/${value}`}
+            />
+          </>
+        ) : null
+      )}
     </Head>
     <Title>{slugToTitle(props.page.slug)}</Title>
     <div className="flex my-4 items-stretch justify-between flex-col sm:flex-row">
