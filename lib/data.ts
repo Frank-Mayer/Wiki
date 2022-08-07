@@ -4,9 +4,8 @@ import matter from "gray-matter";
 import { Converter } from "showdown";
 import { showdownToc } from "./showdownToc";
 import type { TocItem } from "./showdownToc";
-import { deepCopy } from "./deepCopy";
 import { showdownImage } from "./showdownImage";
-import { slugToTitle } from "./string";
+import { escapeHtml, isDefaultDataKey, slugToTitle } from "./string";
 
 export type WikiPageMeta = [string, string];
 
@@ -39,7 +38,11 @@ export const getAllPages = async (): Promise<ReadonlyArray<WikiPage>> => {
         slug,
         meta: Object.keys(pageMatter.data).map((key) => [
           key,
-          pageMatter.data[key],
+          escapeHtml(
+            typeof pageMatter.data[key] === "string"
+              ? pageMatter.data[key]
+              : JSON.stringify(pageMatter.data[key])
+          ),
         ]),
         content: converter.makeHtml(pageMatter.content),
         toc: mdData.toc,
@@ -55,6 +58,9 @@ export const getAllPages = async (): Promise<ReadonlyArray<WikiPage>> => {
       "gi"
     );
 
+    const makeAnchor = (match: string) =>
+      `<a href="/wiki/${targetPage.slug}">${match}</a>`;
+
     for (const sourcePage of pages) {
       if (targetPage.slug === sourcePage.slug) {
         continue;
@@ -62,10 +68,20 @@ export const getAllPages = async (): Promise<ReadonlyArray<WikiPage>> => {
 
       (sourcePage as any).content = sourcePage.content.replace(
         pageTitleRegex,
-        (match) => {
-          return `<a href="/wiki/${targetPage.slug}">${match}</a>`;
-        }
+        makeAnchor
       );
+
+      for (const m of sourcePage.meta) {
+        if (isDefaultDataKey(m[0])) {
+          if (typeof m[0] === "string") {
+            m[0] = m[0].replace(pageTitleRegex, makeAnchor);
+          }
+
+          if (typeof m[1] === "string") {
+            m[1] = m[1].replace(pageTitleRegex, makeAnchor);
+          }
+        }
+      }
     }
   }
 

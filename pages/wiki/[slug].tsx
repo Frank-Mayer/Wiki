@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { Title } from "../../components/Title";
-import type { WikiPage } from "../../lib/data";
+import { WikiPage } from "../../lib/data";
 import { getAllPages } from "../../lib/data";
-import { slugToTitle, slugToUrl } from "../../lib/string";
+import { slugToTitle, slugToUrl, isDefaultDataKey } from "../../lib/string";
 
 export const getStaticProps = async (context: any) => {
   const slug = context.params?.slug;
@@ -95,16 +95,20 @@ const Page = (props: { page: WikiPage }) => (
               src={`/images/${props.page.slug}/${value}`}
             />
           ))}
-        <table className="table-auto w-full sm:max-w-xs h-auto">
+        <table className="table-auto w-full sm:max-w-xs h-auto prose prose-invert">
           <tbody>
             {props.page.meta
-              .filter(
-                (meta) => meta[0] !== "image" && !meta[0].startsWith("meta:")
-              )
+              .filter((meta) => isDefaultDataKey(meta[0]))
               .map((meta) => (
                 <tr key={"meta." + meta[0]}>
-                  <td className="text-slate-200">{meta[0]}</td>
-                  <td className="text-slate-400">{meta[1]}</td>
+                  <td
+                    className="text-slate-200"
+                    dangerouslySetInnerHTML={{ __html: meta[0] }}
+                  />
+                  <td
+                    className="text-slate-400"
+                    dangerouslySetInnerHTML={{ __html: meta[1] }}
+                  />
                 </tr>
               ))}
           </tbody>
