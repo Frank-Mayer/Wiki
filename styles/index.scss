@@ -1,0 +1,33 @@
+input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  background-color: rgb(15, 23, 42);
+}
+
+:root,
+body,
+#__next {
+  width: 100vw;
+  min-height: 100vh;
+  overflow: {
+    x: hidden;
+    y: auto;
+  }
+
+  main {
+    min-height: 100vh;
+  }
+}
+
+img {
+  pointer-events: none;
+  user-select: none;
+}
