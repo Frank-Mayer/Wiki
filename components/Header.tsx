@@ -40,12 +40,10 @@ export const Header = (props: { pages: Array<WikiPage> }) => {
   return (
     <>
       <Link href="/">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/favicon.webp"
-          className="fixed top-4 left-2 w-auto h-12 cursor-pointer"
-          alt="Home"
-        />
+        <a className="fixed top-4 left-2 w-fit h-fit cursor-pointer">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="w-auto h-12" src="/favicon.webp" alt="Home" />
+        </a>
       </Link>
       <label className="flex fixed top-4 right-4 sm:left-auto left-14 z-20 items-center sm:w-72 text-left space-x-3 px-4 h-12 ring-slate-900/10 focus:outline-none focus:ring-2 shadow-sm rounded-lg bg-slate-800 ring-0 text-slate-400 highlight-white/5 hover:bg-slate-700">
         <svg
