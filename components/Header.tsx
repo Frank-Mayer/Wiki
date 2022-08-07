@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useState } from "preact/hooks";
 import { WikiPage } from "../lib/data";
 import { slugToTitle, slugToUrl } from "../lib/string";
 
