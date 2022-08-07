@@ -65,7 +65,7 @@ const Page = (props: { page: WikiPage }) => (
       )}
     </Head>
     <Title>{slugToTitle(props.page.slug)}</Title>
-    <div className="flex my-4 items-stretch justify-between flex-col sm:flex-row">
+    <div className="flex my-4 items-stretch justify-evenly flex-col sm:flex-row">
       <ul className="my-4">
         {props.page.toc.map((item) => (
           <li
