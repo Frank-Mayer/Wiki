@@ -9,17 +9,13 @@ const query = (x: WikiPage, q: string, fullText = false) => {
 
   if (fullText) {
     for (const word of q.toLowerCase().split(/\s+/)) {
-      try {
-        for (const meta of x.meta) {
-          if (
-            meta[0].toLowerCase().includes(word) ||
-            meta[1].toString().toLowerCase().includes(word)
-          ) {
-            return true;
-          }
+      for (const meta of x.meta) {
+        if (
+          meta[0].toLowerCase().includes(word) ||
+          meta[1].toString().toLowerCase().includes(word)
+        ) {
+          return true;
         }
-      } catch (e) {
-        console.error(e, x);
       }
       if (pageTitle.includes(word) || content.includes(word)) {
         return true;
