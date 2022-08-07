@@ -6,6 +6,7 @@ import { showdownToc } from "./showdownToc";
 import type { TocItem } from "./showdownToc";
 import { deepCopy } from "./deepCopy";
 import { showdownImage } from "./showdownImage";
+import { slugToTitle } from "./string";
 
 export type WikiPageMeta = [string, string];
 
@@ -41,8 +42,30 @@ export const getAllPages = async (): Promise<ReadonlyArray<WikiPage>> => {
           pageMatter.data[key],
         ]),
         content: converter.makeHtml(pageMatter.content),
-        toc: deepCopy(mdData.toc),
+        toc: mdData.toc,
       });
+    }
+  }
+
+  for (const targetPage of pages) {
+    const pageTitleRegex = new RegExp(
+      slugToTitle(targetPage.slug)
+        .replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")
+        .replace(/\s+/g, "\\s+"),
+      "gi"
+    );
+
+    for (const sourcePage of pages) {
+      if (targetPage.slug === sourcePage.slug) {
+        continue;
+      }
+
+      (sourcePage as any).content = sourcePage.content.replace(
+        pageTitleRegex,
+        (match) => {
+          return `<a href="/wiki/${targetPage.slug}">${match}</a>`;
+        }
+      );
     }
   }
 
