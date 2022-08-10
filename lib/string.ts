@@ -16,3 +16,8 @@ export const escapeHtml = (unsafe: string) =>
 
 export const isDefaultDataKey = (key: string) =>
   key !== "image" && !key.startsWith("meta:");
+
+const regExpEscapeRegExp = /[.*+?^${}()|[\]\\]/g;
+export const escapeRegExp = (string: string) => {
+  return string.replace(regExpEscapeRegExp, "\\$&");
+};

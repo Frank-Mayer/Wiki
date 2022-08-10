@@ -1,34 +1,25 @@
 import Link from "next/link";
 import { useState } from "preact/hooks";
 import { WikiPage } from "../lib/data";
-import { slugToTitle, slugToUrl } from "../lib/string";
+import { escapeRegExp, slugToTitle, slugToUrl } from "../lib/string";
 
-const query = (x: WikiPage, q: string, fullText = false) => {
+const query = (x: WikiPage, q: string) => {
   const pageTitle = slugToTitle(x.slug).toLowerCase();
   const content = x.content.toLowerCase().replace(/<\/?[^>]+>/gm, "");
 
-  if (fullText) {
-    for (const word of q.toLowerCase().split(/\s+/)) {
-      for (const meta of x.meta) {
-        if (
-          meta[0].toLowerCase().includes(word) ||
-          meta[1].toString().toLowerCase().includes(word)
-        ) {
-          return true;
-        }
-      }
-      if (pageTitle.includes(word) || content.includes(word)) {
-        return true;
-      }
+  let score = 0;
+  for (const word of q.toLowerCase().split(/\s+/)) {
+    const wordRegex = new RegExp(escapeRegExp(word), "gi");
+    for (const meta of x.meta) {
+      score += meta[0].toLowerCase().match(wordRegex)?.length ?? 0;
+      score += meta[1].toString().toLowerCase().match(wordRegex)?.length ?? 0;
     }
-  } else {
-    for (const word of q.toLowerCase().split(/\s+/)) {
-      if (pageTitle.includes(word)) {
-        return true;
-      }
-    }
+
+    score += (pageTitle.match(wordRegex)?.length ?? 0) * 10;
+    score += content.match(wordRegex)?.length ?? 0;
   }
-  return false;
+
+  return score;
 };
 
 export const Header = (props: { pages: Array<WikiPage> }) => {
@@ -77,12 +68,12 @@ export const Header = (props: { pages: Array<WikiPage> }) => {
           ></div>
           <ul className="fixed z-50 px-4 py-6 rounded-lg top-20 bottom-1/2 sm:bottom-1/4 inset-x-4 sm:max-w-md sm:w-full sm:mx-auto sm:inset-x-0 bg-slate-700">
             {props.pages
-              .filter((x) => query(x, value, true))
+              .filter((x) => query(x, value))
               .sort((a, b) => {
-                if (query(a, value) && !query(b, value)) {
+                if (query(a, value) > query(b, value)) {
                   return -1;
                 }
-                if (!query(a, value) && query(b, value)) {
+                if (query(a, value) < query(b, value)) {
                   return 1;
                 }
                 return 0;

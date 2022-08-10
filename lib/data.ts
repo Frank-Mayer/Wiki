@@ -5,7 +5,12 @@ import { Converter } from "showdown";
 import { showdownToc } from "./showdownToc";
 import type { TocItem } from "./showdownToc";
 import { showdownImage } from "./showdownImage";
-import { escapeHtml, isDefaultDataKey, slugToTitle } from "./string";
+import {
+  escapeHtml,
+  escapeRegExp,
+  isDefaultDataKey,
+  slugToTitle,
+} from "./string";
 
 export type WikiPageMeta = [string, string];
 
@@ -52,9 +57,7 @@ export const getAllPages = async (): Promise<ReadonlyArray<WikiPage>> => {
 
   for (const targetPage of pages) {
     const pageTitleRegex = new RegExp(
-      slugToTitle(targetPage.slug)
-        .replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")
-        .replace(/\s+/g, "\\s+"),
+      escapeRegExp(slugToTitle(targetPage.slug)).replace(/\s+/g, "\\s+"),
       "gi"
     );
 
