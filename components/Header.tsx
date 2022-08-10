@@ -15,7 +15,7 @@ const query = (x: WikiPage, q: string) => {
       score += meta[1].toString().toLowerCase().match(wordRegex)?.length ?? 0;
     }
 
-    score += (pageTitle.match(wordRegex)?.length ?? 0) * 10;
+    score += (pageTitle.match(wordRegex)?.length ?? 0) * 100;
     score += content.match(wordRegex)?.length ?? 0;
   }
 
