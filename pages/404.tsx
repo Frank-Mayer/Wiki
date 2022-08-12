@@ -1,6 +1,15 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Title } from "../components/Title";
+import { getAllPages } from "../lib/data";
+
+export const getStaticProps = async () => {
+  return {
+    props: {
+      allPages: await getAllPages(),
+    },
+  };
+};
 
 const Page = () => {
   const router = useRouter();
