@@ -30,6 +30,8 @@ const Page = (props: { page: WikiPage }) => (
     <Head>
       <meta property="twitter:card" content="summary" />
       <title>Reost – {slugToTitle(props.page.slug)}</title>
+      {/* eslint-disable-next-line @next/next/no-css-tags */}
+      <link rel="stylesheet" href="/styles/print.css" media="print" />
       <meta
         property="og:title"
         content={"Reost – " + slugToTitle(props.page.slug)}

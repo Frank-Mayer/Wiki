@@ -1,0 +1,32 @@
+body,
+main {
+  background-color: white !important;
+  opacity: 1 !important;
+}
+
+* {
+  color: black !important;
+}
+
+main {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#__next > a,
+#__next > label,
+#__next > footer {
+  display: none;
+}
+
+main > div {
+  flex-direction: row !important;
+}
+
+main > div > div {
+  width: 40% !important;
+}
+main > div > div > table td,
+main > div > div > table th {
+  font-size: 0.75rem;
+}
